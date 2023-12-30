@@ -10,4 +10,4 @@ jobs:
       - uses: actions/checkout@v4
       - run: rustup install stable
       - run: RUSTFLAGS="-D warnings" cargo build --color=always --all-features
-      - run: cargo test --verbose --color=always -- --color=always
+      - run: cargo test --color=always
