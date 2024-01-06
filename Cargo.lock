@@ -10,9 +10,9 @@ checksum = "1fd0f2584146f6f2ef48085050886acf353beff7305ebd1ae69500e27c67f64b"
 
 [[package]]
 name = "conclave-room"
-version = "0.0.2-pre01"
+version = "0.0.2-pre02"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "40895f9512af88e8b15cbb408b9200715b9a700b812184f0e75e0004e4107d2a"
+checksum = "2aa50b194e26ff30a571806187c5ae19f16653974044a447d31748a082e07b65"
 
 [[package]]
 name = "conclave-room-net"

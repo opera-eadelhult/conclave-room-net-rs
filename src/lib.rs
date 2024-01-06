@@ -35,19 +35,34 @@ impl SendDatagram for Room {
 }
 
 pub trait ReceiveDatagram {
-    fn receive(&mut self, connection_id: ConnectionIndex, now: Instant, buffer: Cursor<&[u8]>) -> Result<(), String>;
+    fn receive(
+        &mut self,
+        connection_id: ConnectionIndex,
+        now: Instant,
+        buffer: Cursor<&[u8]>,
+    ) -> Result<(), String>;
 }
 
 impl ReceiveDatagram for Room {
-    fn receive(&mut self, connection_id: ConnectionIndex, now: Instant, reader: Cursor<&[u8]>) -> Result<(), String> {
+    fn receive(
+        &mut self,
+        connection_id: ConnectionIndex,
+        now: Instant,
+        reader: Cursor<&[u8]>,
+    ) -> Result<(), String> {
         if !self.connections.contains_key(&connection_id) {
             return Err(format!("there is no connection {}", connection_id));
         }
-        let connection = self.connections.get_mut(&connection_id).unwrap();
         let command = ServerReceiveCommand::from_cursor(reader).unwrap();
         match command {
             ServerReceiveCommand::PingCommandType(ping_command) => {
-                connection.on_ping(ping_command.term, ping_command.has_connection_to_leader, ping_command.knowledge, now);
+                self.on_ping(
+                    connection_id,
+                    ping_command.term,
+                    ping_command.has_connection_to_leader,
+                    ping_command.knowledge,
+                    now,
+                );
             }
         }
         Ok(())
@@ -79,7 +94,7 @@ mod tests {
             PING_COMMAND_TYPE_ID,
             0x00, // Term
             0x20,
-            0xF5,  // Knowledge
+            0xF5, // Knowledge
             0xE6,
             0x0E,
             0x32,
@@ -87,7 +102,7 @@ mod tests {
             0xE4,
             0x7F,
             0x08,
-            0x01, // Has Connection
+            0x01, // Has connection to leader
         ];
         let receive_cursor = Cursor::new(octets.as_slice());
 
