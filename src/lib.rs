@@ -108,8 +108,7 @@ mod tests {
 
         let mut room = Room::new();
         let now = Instant::now();
-        let first_mutable_connection = room.create_connection(now);
-        let first_connection_id = first_mutable_connection.id;
+        let first_connection_id = room.create_connection(now);
         let receive_result = room.receive(first_connection_id, now, receive_cursor);
         assert_eq!(receive_result, Ok(()));
 
