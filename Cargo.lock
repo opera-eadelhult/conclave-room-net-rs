@@ -16,7 +16,7 @@ checksum = "2aa50b194e26ff30a571806187c5ae19f16653974044a447d31748a082e07b65"
 
 [[package]]
 name = "conclave-room-net"
-version = "0.0.1"
+version = "0.0.2-pre01"
 dependencies = [
  "conclave-room",
  "conclave-room-serialize",
@@ -24,9 +24,9 @@ dependencies = [
 
 [[package]]
 name = "conclave-room-serialize"
-version = "0.0.2-pre01"
+version = "0.0.2-pre02"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ac14c7e1a147079f174b62d2d57006fb797b4302034d9323fc99734bf8d14e36"
+checksum = "e900908c66bdcc8182b26b4e09d97bcecaed76adc67520cbae3692494db873b8"
 dependencies = [
  "byteorder",
  "conclave-room",
