@@ -9,5 +9,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: rustup install stable
+      - run: RUSTFLAGS="-D warnings" cargo clippy # -- -Wclippy::pedantic
       - run: RUSTFLAGS="-D warnings" cargo build --color=always --all-features
       - run: cargo test --color=always

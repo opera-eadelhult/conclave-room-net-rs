@@ -9,7 +9,6 @@
 use std::io::Cursor;
 use std::time::Instant;
 
-use conclave_room;
 use conclave_room::{ConnectionIndex, Room};
 use conclave_room_serialize::{RoomInfoCommand, ServerReceiveCommand};
 
