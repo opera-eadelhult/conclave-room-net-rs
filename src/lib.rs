@@ -5,12 +5,11 @@
 //! The Conclave Net Layer
 //!
 //! Easier to handle incoming network commands and construct outgoing messages
-
-use std::io::Cursor;
 use std::time::Instant;
 
 use conclave_room::{ConnectionIndex, Room};
 use conclave_room_serialize::{RoomInfoCommand, ServerReceiveCommand};
+use flood_rs::{OutOctetStream, ReadOctetStream};
 
 pub struct NetworkConnection {
     pub id: ConnectionIndex,
@@ -29,7 +28,13 @@ impl SendDatagram for Room {
             client_infos: vec![],
         };
 
-        room_info_command.to_octets()
+        let mut stream = OutOctetStream::new();
+
+        room_info_command
+            .to_octets(&mut stream)
+            .expect("Failed to write command {room_info_command:?} to octet stream");
+
+        stream.data
     }
 }
 
@@ -38,7 +43,7 @@ pub trait ReceiveDatagram {
         &mut self,
         connection_id: ConnectionIndex,
         now: Instant,
-        buffer: Cursor<&[u8]>,
+        buffer: &mut impl ReadOctetStream,
     ) -> Result<(), String>;
 }
 
@@ -47,7 +52,7 @@ impl ReceiveDatagram for Room {
         &mut self,
         connection_id: ConnectionIndex,
         now: Instant,
-        reader: Cursor<&[u8]>,
+        reader: &mut impl ReadOctetStream,
     ) -> Result<(), String> {
         if !self.connections.contains_key(&connection_id) {
             return Err(format!("there is no connection {}", connection_id));
@@ -70,11 +75,11 @@ impl ReceiveDatagram for Room {
 
 #[cfg(test)]
 mod tests {
-    use std::io::Cursor;
     use std::time::Instant;
 
     use conclave_room::Room;
     use conclave_room_serialize::PING_COMMAND_TYPE_ID;
+    use flood_rs::InOctetStream;
 
     use crate::{ReceiveDatagram, SendDatagram};
 
@@ -103,12 +108,12 @@ mod tests {
             0x08,
             0x01, // Has connection to leader
         ];
-        let receive_cursor = Cursor::new(octets.as_slice());
+        let mut receive_cursor = InOctetStream::new(octets.into());
 
         let mut room = Room::new();
         let now = Instant::now();
         let first_connection_id = room.create_connection(now);
-        let receive_result = room.receive(first_connection_id, now, receive_cursor);
+        let receive_result = room.receive(first_connection_id, now, &mut receive_cursor);
         assert_eq!(receive_result, Ok(()));
 
         let connection_after_receive = room.connections.get(&first_connection_id).unwrap();

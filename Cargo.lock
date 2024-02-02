@@ -3,12 +3,6 @@
 version = 3
 
 [[package]]
-name = "byteorder"
-version = "1.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1fd0f2584146f6f2ef48085050886acf353beff7305ebd1ae69500e27c67f64b"
-
-[[package]]
 name = "conclave-room"
 version = "0.0.2-pre02"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -20,14 +14,21 @@ version = "0.0.2-pre01"
 dependencies = [
  "conclave-room",
  "conclave-room-serialize",
+ "flood-rs",
 ]
 
 [[package]]
 name = "conclave-room-serialize"
-version = "0.0.2-pre02"
+version = "0.0.2-pre03"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e900908c66bdcc8182b26b4e09d97bcecaed76adc67520cbae3692494db873b8"
+checksum = "492336797a68bb6b451585903bb710a717f4a8e0253d053bd161911336229162"
 dependencies = [
- "byteorder",
  "conclave-room",
+ "flood-rs",
 ]
+
+[[package]]
+name = "flood-rs"
+version = "0.0.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f1e28f58756e2245436eeb3933dc26e4678259854401b660c0259770f6bc1394"
