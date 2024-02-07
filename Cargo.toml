@@ -9,6 +9,6 @@ repository = "https://github.com/piot/conclave-room-net-rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-conclave-room = "0.0.2-pre02"
+conclave-room = { git = "https://github.com/opera-eadelhult/conclave-room-rs" }
 conclave-room-serialize = "0.0.2-pre02"
 flood-rs = "0.0.3"
